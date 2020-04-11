@@ -104,7 +104,7 @@ except InvalidMemoryString as err:
 In the above examples, you might have noticed that we used the equality operator (`==`)
 to compare two `Memory` objects. The equality operator actually works by comparing the
 number of bytes, rather than the value and unit. So, if I want to see if two memory
-variables are the same, but they have different units. No problem!
+variables are the same, but they have different units - no problem!
 
 ```python
 from memory_units import Unit, Memory
@@ -116,7 +116,7 @@ assert mem1 == mem2
 ```
 
 Converting between different units is a pretty common need. Let's say we want to convert
-50 kilobytes into megabytes.
+2,500 kilobytes into megabytes.
 
 ```python
 from memory_units import Unit, Memory
@@ -179,6 +179,7 @@ mem = Memory(5.6, Unit.EXA)
 
 assert mem.power == 6
 assert mem.suffix == "EB"
+assert mem.value == 5.6
 ```
 
 #### Bioinformatics bonus
