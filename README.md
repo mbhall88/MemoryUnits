@@ -39,8 +39,8 @@ There are two main classes in this library: `Unit` and `Memory`
 
 ### `Unit`
 
-`Unit` is the class is used for scaling your memory value. The units are the same as
-[metric prefixes][metric] and go from Kilo up to Zetta (with Bytes as the base).
+`Unit` is the class used for scaling your memory value. The units are the same as
+[metric units][metric] and go from Kilo up to Zetta (with Bytes as the base).
 
 They can be constructed in two different ways, or you can directly use one as the class
 is just an [`Enum`][enum].
