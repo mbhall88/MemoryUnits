@@ -1,6 +1,6 @@
 import pytest
 
-from memory_units import Unit, InvalidSuffix, InvalidPower, Memory
+from memory_units import Unit, InvalidSuffix, InvalidPower, Memory, InvalidMemoryString
 
 
 class TestUnitFromSuffix:
@@ -120,6 +120,16 @@ class TestMemoryBytes:
 
         actual = mem.bytes()
         expected = 500_000_000
+
+        assert actual == expected
+
+    def test_large_floats_comparison(self):
+        value = 500
+        unit = Unit.ZETA
+        mem = Memory(value, unit)
+
+        actual = mem.bytes()
+        expected = float(500_000_000_000_000_000_000_000)
 
         assert actual == expected
 
@@ -244,3 +254,93 @@ class TestMemoryTo:
         expected = Memory(32_212_254_720, desired_units)
 
         assert actual == expected
+
+
+class TestMemoryFromStr:
+    def test_empty_string_raises_error(self):
+        s = ""
+
+        with pytest.raises(InvalidMemoryString):
+            Memory.from_str(s)
+
+    def test_no_suffix_returns_bytes(self):
+        s = "500"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500)
+
+        assert actual == expected
+
+    def test_no_suffix_and_float_returns_bytes(self):
+        s = "500.8"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500.8)
+
+        assert actual == expected
+
+    def test_single_letter_suffix_is_valid(self):
+        s = "500M"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500, Unit.MEGA)
+
+        assert actual == expected
+
+    def test_b_suffix_is_valid(self):
+        s = "500MB"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500, Unit.MEGA)
+
+        assert actual == expected
+
+    def test_space_between_size_and_suffix_is_valid(self):
+        s = "500 MB"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500, Unit.MEGA)
+
+        assert actual == expected
+
+    def test_multiple_spaces_between_size_and_suffix_is_valid(self):
+        s = "500  MB"
+
+        actual = Memory.from_str(s)
+        expected = Memory(500, Unit.MEGA)
+
+        assert actual == expected
+
+    def test_suffix_is_case_insensitive(self):
+        s = "500zb"
+
+        actual = Memory.from_str(s).bytes()
+        expected = Memory(500, Unit.ZETA).bytes()
+
+        assert actual == expected
+
+    def test_suffix_only_raises_error(self):
+        s = "TB"
+
+        with pytest.raises(InvalidMemoryString):
+            Memory.from_str(s)
+
+    def test_bytes_suffix_is_valid(self):
+        s = "7B"
+
+        actual = Memory.from_str(s)
+        expected = Memory(7)
+
+        assert actual == expected
+
+    def test_invalid_suffix_raises_error(self):
+        s = "7LB"
+
+        with pytest.raises(InvalidMemoryString):
+            Memory.from_str(s)
+
+    def test_string_with_other_characters_raises_error(self):
+        s = "7KBY"
+
+        with pytest.raises(InvalidMemoryString):
+            Memory.from_str(s)

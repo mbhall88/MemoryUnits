@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 from typing import NamedTuple, Union
 
@@ -7,6 +8,10 @@ class InvalidSuffix(Exception):
 
 
 class InvalidPower(Exception):
+    pass
+
+
+class InvalidMemoryString(Exception):
     pass
 
 
@@ -102,11 +107,29 @@ class Memory:
 
     def bytes(self, decimal_multiples: bool = True) -> float:
         scaling_factor = self._scaling_factor(decimal_multiples)
-        return self.value * (scaling_factor ** self.power)
+        return float(self.value * (scaling_factor ** self.power))
 
     def to(self, unit: Unit, decimal_multiples: bool = True) -> "Memory":
         scaling_factor = self._scaling_factor(decimal_multiples) ** unit.power
         size = self.bytes(decimal_multiples)
         size /= scaling_factor
+
+        return Memory(size, unit)
+
+    @staticmethod
+    def from_str(s: str) -> "Memory":
+        valid_suffixes = "".join(scale.metric_suffix for scale in SCALE_MAP.values())
+        regex = re.compile(
+            r"^(?P<size>[0-9]*\.?[0-9]+)\s*(?P<sfx>[{}]B?)?$".format(valid_suffixes),
+            re.IGNORECASE,
+        )
+        match = regex.search(s)
+
+        if not match:
+            raise InvalidMemoryString(f"{s} is an invalid memory string.")
+
+        size = float(match.group("size"))
+        suffix = match.group("sfx") or "B"
+        unit = Unit.from_suffix(suffix)
 
         return Memory(size, unit)
