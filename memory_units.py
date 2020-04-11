@@ -1,8 +1,12 @@
 from enum import Enum
-from typing import NamedTuple
+from typing import NamedTuple, Union
 
 
 class InvalidSuffix(Exception):
+    pass
+
+
+class InvalidPower(Exception):
     pass
 
 
@@ -24,7 +28,7 @@ SCALE_MAP = {
 
 
 class Unit(Enum):
-    BASE = SCALE_MAP["B"]
+    BYTES = SCALE_MAP["B"]
     KILO = SCALE_MAP["K"]
     MEGA = SCALE_MAP["M"]
     GIGA = SCALE_MAP["G"]
@@ -37,8 +41,72 @@ class Unit(Enum):
     def from_suffix(suffix: str) -> "Unit":
         first_letter = suffix[0].upper()
         if first_letter not in SCALE_MAP:
-            valid_suffixes = " ".join(
+            valid_suffixes = ",".join(
                 scale.metric_suffix for scale in SCALE_MAP.values()
             )
             raise InvalidSuffix(f"{suffix}. Valid suffixes are: {valid_suffixes}")
         return Unit(SCALE_MAP[first_letter])
+
+    @staticmethod
+    def from_power(power: int) -> "Unit":
+        valid_powers = []
+        for scale in SCALE_MAP.values():
+            if scale.power == power:
+                return Unit(scale)
+            valid_powers.append(scale.power)
+
+        raise InvalidPower(
+            f"{power}. Valid powers are: {','.join(str(p) for p in valid_powers)}"
+        )
+
+    @property
+    def power(self) -> int:
+        return self.value.power
+
+    @property
+    def suffix(self) -> str:
+        return self.value.metric_suffix
+
+
+Number = Union[int, float]
+
+
+class Memory:
+    def __init__(self, value: Number = 1, unit: Unit = Unit.BYTES):
+        self.value = value
+        self.unit = unit
+        self._decimal_scaling_factor = 1_000
+        self._binary_scaling_factor = 1_024
+
+    def __eq__(self, other: "Memory") -> bool:
+        return self.bytes() == other.bytes()
+
+    def __repr__(self) -> str:
+        val = (
+            int(self.value)
+            if isinstance(self.value, int) or self.value.is_integer()
+            else self.value
+        )
+        return f"{val}{self.suffix}"
+
+    @property
+    def power(self) -> int:
+        return self.unit.power
+
+    @property
+    def suffix(self) -> str:
+        return self.unit.suffix
+
+    def _scaling_factor(self, decimal: bool = True) -> int:
+        return self._decimal_scaling_factor if decimal else self._binary_scaling_factor
+
+    def bytes(self, decimal_multiples: bool = True) -> float:
+        scaling_factor = self._scaling_factor(decimal_multiples)
+        return self.value * (scaling_factor ** self.power)
+
+    def to(self, unit: Unit, decimal_multiples: bool = True) -> "Memory":
+        scaling_factor = self._scaling_factor(decimal_multiples) ** unit.power
+        size = self.bytes(decimal_multiples)
+        size /= scaling_factor
+
+        return Memory(size, unit)
