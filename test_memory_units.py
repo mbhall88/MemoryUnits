@@ -125,7 +125,7 @@ class TestMemoryBytes:
 
     def test_large_floats_comparison(self):
         value = 500
-        unit = Unit.ZETA
+        unit = Unit.ZETTA
         mem = Memory(value, unit)
 
         actual = mem.bytes()
@@ -152,7 +152,7 @@ class TestRepr:
         assert actual == expected
 
     def test_float_number_returns_float(self):
-        memory = Memory(50.2, Unit.ZETA)
+        memory = Memory(50.2, Unit.ZETTA)
 
         actual = str(memory)
         expected = "50.2ZB"
@@ -315,7 +315,7 @@ class TestMemoryFromStr:
         s = "500zb"
 
         actual = Memory.from_str(s).bytes()
-        expected = Memory(500, Unit.ZETA).bytes()
+        expected = Memory(500, Unit.ZETTA).bytes()
 
         assert actual == expected
 

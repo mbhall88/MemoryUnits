@@ -40,7 +40,7 @@ class Unit(Enum):
     TERA = SCALE_MAP["T"]
     PETA = SCALE_MAP["P"]
     EXA = SCALE_MAP["E"]
-    ZETA = SCALE_MAP["Z"]
+    ZETTA = SCALE_MAP["Z"]
 
     @staticmethod
     def from_suffix(suffix: str) -> "Unit":
