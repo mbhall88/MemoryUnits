@@ -42,7 +42,7 @@ There are two main classes in this library: `Unit` and `Memory`
 `Unit` is the class is used for scaling your memory value. The units are the same as
 [metric prefixes][metric] and go from Kilo up to Zetta (with Bytes as the base).
 
-They can be constructed in two different ways or you can directly use one as the class
+They can be constructed in two different ways, or you can directly use one as the class
 is just an [`Enum`][enum].
 
 ```python
@@ -101,7 +101,7 @@ except InvalidMemoryString as err:
 # 60LB is an invalid memory string.
 ```
 
-In the above examples you might have noticed that we used the equality operator (`==`)
+In the above examples, you might have noticed that we used the equality operator (`==`)
 to compare two `Memory` objects. The equality operator actually works by comparing the
 number of bytes, rather than the value and unit. So, if I want to see if two memory
 variables are the same, but they have different units. No problem!
@@ -143,7 +143,7 @@ expected = 40_000_000_000
 assert actual == expected
 ```
 
-Hmmm, but we want our resulting bytes to be in binary multiples i.e. 1024 instead of
+Hmmm, but we want our resulting bytes to be in binary multiples, i.e. 1024 instead of
 1000\.
 
 ```python
@@ -198,7 +198,7 @@ assert actual_bases == expected_bases
 
 ## Contributing
 
-I am very happy to recieve pull requests!
+I am very happy to receive pull requests!
 
 ### Set up
 
