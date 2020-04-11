@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/mbhall88/MemoryUnits/branch/master/graph/badge.svg)](https://codecov.io/gh/mbhall88/MemoryUnits)
 ![GitHub](https://img.shields.io/github/license/mbhall88/MemoryUnits)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Build status](https://github.com/mbhall88/MemoryUnits/workflows/Python%20package/badge.svg)
+![Python versions](https://img.shields.io/badge/Python%20versions-3.6|3.7|3.8-blue)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mbhall88/MemoryUnits/Python_package)](https://github.com/mbhall88/MemoryUnits/actions)
 
 Python objects for working with memory units, file sizes, or even genome sizes.
