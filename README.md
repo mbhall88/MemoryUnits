@@ -6,7 +6,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![Python versions](https://img.shields.io/badge/Python%20versions-3.6|3.7|3.8-blue)
 
-Python objects for working with memory units, file sizes, or even genome sizes.
+Python objects for dealing with metric units and memory, file, and genome sizes.
 
 
 [TOC]:#
