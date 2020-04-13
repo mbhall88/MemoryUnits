@@ -25,7 +25,7 @@ Python objects for dealing with metric units and memory, file, and genome sizes.
 
 ## Install
 
-This library is intended to be "headerless". That is, just copy and paste the code (and
+This library is intended to be "header-only". That is, just copy and paste the code (and
 test) into your project.  
 No need to `pip install` anything.  
 The only dependency is `pytest` if you include the test code in your project. The actual
